@@ -1,0 +1,51 @@
+Discord Music Bot - Complete Setup Guide
+==========================================
+
+REQUIREMENTS:
+- Python 3.8 or higher
+- FFmpeg (for audio processing)
+- Discord Bot Token
+
+STEP 1: Install Python Dependencies
+-----------------------------------
+pip install discord.py yt-dlp spotipy aiohttp PyNaCl python-dotenv
+
+STEP 2: Install FFmpeg
+----------------------
+Windows (with Chocolatey):
+  choco install ffmpeg
+
+Mac (with Homebrew):
+  brew install ffmpeg
+
+Linux (Ubuntu/Debian):
+  sudo apt install ffmpeg
+
+Linux (CentOS/RHEL):
+  sudo dnf install ffmpeg
+
+STEP 3: Configure Bot Token
+---------------------------
+Create a .env file and add:
+DISCORD_TOKEN=your_bot_token_here
+
+Or set environment variable:
+Windows: set DISCORD_TOKEN=your_token
+Mac/Linux: export DISCORD_TOKEN=your_token
+
+STEP 4: Run the Bot
+-------------------
+python main.py
+
+SLASH COMMANDS:
+- /play [song/url] - Play music from YouTube or Spotify
+- /pause - Pause current track
+- /resume - Resume playback
+- /skip - Skip current track
+- /stop - Stop and clear queue
+- /queue - Show current queue
+- /volume [0-100] - Set volume
+- /autoplay - Toggle autoplay mode
+- /disconnect - Leave voice channel
+
+The bot also includes interactive button controls for easy music management!

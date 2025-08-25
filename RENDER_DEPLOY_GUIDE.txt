@@ -1,0 +1,46 @@
+Discord Bot Deployment on Render.com - Complete Guide
+====================================================
+
+STEP 1: Prepare Your Files
+--------------------------
+1. Rename 'render_requirements.txt' to 'requirements.txt'
+2. Upload all bot files to GitHub repository
+3. Make sure you have: main.py, bot.py, all other .py files, requirements.txt
+
+STEP 2: Deploy on Render
+-------------------------
+1. Go to https://render.com and sign up/login
+2. Click "New +" → "Web Service"
+3. Connect your GitHub repository
+4. Configure deployment:
+   - Name: discord-music-bot
+   - Environment: Python 3
+   - Build Command: pip install -r requirements.txt
+   - Start Command: python main.py
+
+STEP 3: Set Environment Variables
+---------------------------------
+In Render dashboard, go to Environment tab and add:
+- DISCORD_TOKEN = your_discord_bot_token
+- SPOTIFY_CLIENT_ID = your_spotify_id (optional)
+- SPOTIFY_CLIENT_SECRET = your_spotify_secret (optional)
+
+STEP 4: Deploy
+--------------
+1. Click "Create Web Service"
+2. Wait for build and deployment
+3. Your bot will be running 24/7!
+
+IMPORTANT NOTES:
+- Free tier: 750 hours/month (enough for 24/7)
+- Bot will sleep after 15 minutes of inactivity (free tier limitation)
+- For always-on: upgrade to paid plan ($7/month)
+- Voice connections may have limitations on free tier
+
+TROUBLESHOOTING:
+- If deployment fails, check logs in Render dashboard
+- Make sure requirements.txt is in root directory
+- Verify all Python files are uploaded
+- Check environment variables are set correctly
+
+Your Discord music bot will be hosted and accessible 24/7 on Render!
