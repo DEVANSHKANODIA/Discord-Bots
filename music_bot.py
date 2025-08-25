@@ -464,8 +464,9 @@ class ControlsView(discord.ui.View):
 class MusicBot(commands.Bot):
     def __init__(self):
         super().__init__(command_prefix=commands.when_mentioned_or("!"), intents=INTENTS)
-        self.tree = app_commands.CommandTree(self)
+        # Removed self.tree assignment because discord.py v2 already has it
         self.players: Dict[int, GuildPlayer] = {}
+
 
     def get_player(self, guild: discord.Guild) -> GuildPlayer:
         if guild.id not in self.players:
