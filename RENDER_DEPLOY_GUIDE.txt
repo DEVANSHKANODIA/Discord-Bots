@@ -10,7 +10,7 @@ STEP 1: Prepare Your Files
 STEP 2: Deploy on Render
 -------------------------
 1. Go to https://render.com and sign up/login
-2. Click "New +" → "Web Service"
+2. Click "New +" → "Background Worker" (NOT Web Service!)
 3. Connect your GitHub repository
 4. Configure deployment:
    - Name: discord-music-bot

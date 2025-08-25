@@ -30,16 +30,17 @@ class MusicCommands(commands.Cog):
     @app_commands.describe(query="Song name, YouTube URL, or Spotify URL")
     async def play(self, interaction: discord.Interaction, query: str):
         """Play music command."""
-        await interaction.response.defer()
-        
-        # Check if user is in a voice channel
+        # Check if user is in a voice channel first (before defer)
         if not hasattr(interaction.user, 'voice') or not interaction.user.voice:
             embed = discord.Embed(
                 title="❌ Error",
                 description="You must be in a voice channel to use music commands!",
                 color=discord.Color.red()
             )
-            return await interaction.followup.send(embed=embed, ephemeral=True)
+            return await interaction.response.send_message(embed=embed, ephemeral=True)
+        
+        # Now defer after initial checks
+        await interaction.response.defer()
         
         voice_channel = interaction.user.voice.channel
         music_player = self.get_music_player(interaction.guild_id)
