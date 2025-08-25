@@ -1,15 +1,17 @@
+# Render Blueprint to deploy the bot as a background worker
 services:
   - type: worker
     name: discord-music-bot
-    env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: python main.py
-    plan: free
-    autoDeploy: false
+    env: docker
+    autoDeploy: true
+    dockerfilePath: Dockerfile
+    # Optionally set a region or plan:
+    # region: oregon
+    # plan: free
     envVars:
       - key: DISCORD_TOKEN
-        sync: false
+        sync: false  # set in Render Dashboard
       - key: SPOTIFY_CLIENT_ID
-        sync: false
+        sync: false  # optional
       - key: SPOTIFY_CLIENT_SECRET
-        sync: false
+        sync: false  # optional
