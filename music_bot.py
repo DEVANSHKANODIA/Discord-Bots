@@ -382,36 +382,30 @@ class GuildPlayer:
 # ========================== Buttons View ==========================
 
 class ControlsView(discord.ui.View):
-    def __init__(self, player: GuildPlayer):
-        super().__init__(timeout=None)
+    def __init__(self, player):
+        super().__init__(timeout=None)  # Make view persistent
         self.player = player
 
-    @discord.ui.button(emoji="⏯️", style=discord.ButtonStyle.secondary)
-    async def pause_resume(self, interaction: discord.Interaction, button: discord.ui.Button):
-        vc = interaction.guild.voice_client if interaction.guild else None
-        if not vc:
-            return await interaction.response.send_message("Not in a voice channel.", ephemeral=True)
-        if vc.is_paused():
-            vc.resume()
-            await interaction.response.send_message("▶️ Resumed.", ephemeral=True)
-        else:
-            vc.pause()
-            await interaction.response.send_message("⏸️ Paused.", ephemeral=True)
+    @discord.ui.button(label="▶ Play", style=discord.ButtonStyle.green, custom_id="music_play")
+    async def play_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await self.player.resume()
+        await interaction.response.send_message("▶️ Resumed!", ephemeral=True)
 
-    @discord.ui.button(emoji="⏭️", style=discord.ButtonStyle.secondary)
-    async def skip(self, interaction: discord.Interaction, button: discord.ui.Button):
-        vc = interaction.guild.voice_client if interaction.guild else None
-        if not vc or not vc.is_playing():
-            return await interaction.response.send_message("Nothing to skip.", ephemeral=True)
-        vc.stop()
-        await interaction.response.send_message("⏭️ Skipped.", ephemeral=True)
+    @discord.ui.button(label="⏸ Pause", style=discord.ButtonStyle.gray, custom_id="music_pause")
+    async def pause_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await self.player.pause()
+        await interaction.response.send_message("⏸️ Paused!", ephemeral=True)
 
-    @discord.ui.button(emoji="⏹️", style=discord.ButtonStyle.danger)
-    async def stop(self, interaction: discord.Interaction, button: discord.ui.Button):
-        vc = interaction.guild.voice_client if interaction.guild else None
-        if vc:
-            vc.stop()
-            await interaction.response.send_message("⏹️ Stopped.", ephemeral=True)
+    @discord.ui.button(label="⏭ Skip", style=discord.ButtonStyle.blurple, custom_id="music_skip")
+    async def skip_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await self.player.skip()
+        await interaction.response.send_message("⏭ Skipped!", ephemeral=True)
+
+    @discord.ui.button(label="⏹ Stop", style=discord.ButtonStyle.red, custom_id="music_stop")
+    async def stop_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await self.player.stop()
+        await interaction.response.send_message("⏹ Stopped!", ephemeral=True)
+
 
     @discord.ui.button(emoji="🔁", style=discord.ButtonStyle.secondary)
     async def loop_toggle(self, interaction: discord.Interaction, button: discord.ui.Button):
@@ -474,9 +468,9 @@ class MusicBot(commands.Bot):
         return self.players[guild.id]
 
     async def setup_hook(self):
-        # Persist views
-        self.add_view(ControlsView(GuildPlayer(self, self.guilds[0])) if self.guilds else ControlsView(GuildPlayer(self, None)))  # dummy to register
-        await self.tree.sync()
+    # Register the persistent view once at startup
+    self.add_view(ControlsView(GuildPlayer(self, None)))  # No guild binding initially
+
 
 bot = MusicBot()
 
